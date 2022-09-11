@@ -1,5 +1,5 @@
 package com.ead.course.services;
 
-public interface LessionService {
+public interface LessonService {
 
 }
