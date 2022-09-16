@@ -1,6 +1,8 @@
 package com.ead.course.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -32,6 +34,26 @@ public class ModuleServiceImpl implements ModuleService {
 		}
 		
 		moduleRepository.delete(moduleModel);
+	}
+
+	@Override
+	public ModuleModel save(ModuleModel moduleModel) {
+		return moduleRepository.save(moduleModel);
+	}
+
+	@Override
+	public Optional<ModuleModel> findModuleIntoCourse(UUID moduleId, UUID courseId) {
+		return moduleRepository.findModuleIntoCourse(moduleId, courseId);
+	}
+
+	@Override
+	public List<ModuleModel> findAllByCourse(UUID courseId) {
+		return moduleRepository.findAllModulesIntoCourse(courseId);
+	}
+
+	@Override
+	public Optional<ModuleModel> findById(UUID moduleId) {
+		return moduleRepository.findById(moduleId);
 	}
 
 }
