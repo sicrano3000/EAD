@@ -22,14 +22,14 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "TB_LESSIONS")
+@Table(name = "TB_LESSONS")
 public class LessonModel  implements Serializable { 
 
 	private static final long serialVersionUID = 8633502784038339576L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID lessionId;
+	private UUID lessonId;
 	
 	@Column(nullable = false, length = 150)
 	private String title;
