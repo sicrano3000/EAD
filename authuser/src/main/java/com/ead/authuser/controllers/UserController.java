@@ -32,6 +32,9 @@ import com.ead.authuser.services.UserService;
 import com.ead.authuser.specification.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/users")
@@ -42,7 +45,7 @@ public class UserController {
 	
 	@GetMapping
 	public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
-					@PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {
+					@PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {		
 		Page<UserModel> userModelPage = userService.findAll(spec, pageable);
 		
 		if (!userModelPage.isEmpty()) {
@@ -67,12 +70,19 @@ public class UserController {
 	
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Object> deleteUser(@PathVariable(value = "userId") UUID userId) {
+		log.debug("DELETE deleteUser userId received {} ", userId);
+		
 		Optional<UserModel> userModelOptional = userService.findById(userId);
 		
 		if (!userModelOptional.isPresent()) {
+			log.warn("User {} not found ", userId);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
 		} else {		
 			userService.delete(userModelOptional.get());
+			
+			log.debug("DELETE deleteUser userId saved {} ", userId);
+			log.info("User deleted successfully userId {} ", userId);
+			
 			return ResponseEntity.status(HttpStatus.OK).body("User deleted success.");
 		}
 	}
@@ -81,9 +91,13 @@ public class UserController {
 	public ResponseEntity<Object> updateUser(@PathVariable(value = "userId") UUID userId,
 											 @RequestBody @Validated(UserView.UserPut.class)
 											 @JsonView(UserView.UserPut.class) UserDto userDto) {
+
+		log.debug("PUT updateUser userDto received {} ", userDto.toString());
+		
 		Optional<UserModel> userModelOptional = userService.findById(userId);
 		
 		if (!userModelOptional.isPresent()) {
+			log.warn("User {} not found ", userDto.getUsername());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
 		} else {		
 			var userModel = userModelOptional.get();
@@ -93,7 +107,11 @@ public class UserController {
 			userModel.setCpf(userDto.getCpf());
 			userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 			
-			userService.save(userModel);			
+			userService.save(userModel);
+			
+			log.debug("PUT updateUser userModel saved {} ", userModel.toString());
+			log.info("User updated successfully userId {} ", userModel.getUserId());
+			
 			return ResponseEntity.status(HttpStatus.OK).body(userModel);
 		}
 	}
@@ -105,8 +123,10 @@ public class UserController {
 		Optional<UserModel> userModelOptional = userService.findById(userId);
 		
 		if (!userModelOptional.isPresent()) {
+			log.warn("UserId {} not found ", userId);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
 		} if (!userModelOptional.get().getPassword().equals(userDto.getOldPassword())) {
+			log.warn("UserId {} Mismatched old password", userId);
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Mismatched old password!");	
 		} else {
 			var userModel = userModelOptional.get();
