@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class ResponsePageDto<T> extends PageImpl<T> {
-	
+
+	private static final long serialVersionUID = 3164356565878357055L;
+
 	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
 	public ResponsePageDto(@JsonProperty("content") List<T> content,
 						   @JsonProperty("number") int number,
