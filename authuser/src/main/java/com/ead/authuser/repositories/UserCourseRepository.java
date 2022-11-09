@@ -1,11 +1,13 @@
 package com.ead.authuser.repositories;
 
-import java.util.UUID;
-
+import com.ead.authuser.models.UserCourseModel;
+import com.ead.authuser.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ead.authuser.models.UserCourseModel;
+import java.util.UUID;
 
 public interface UserCourseRepository  extends JpaRepository<UserCourseModel, UUID> {
+
+    Boolean existsByUserAndCourseId(UserModel userModel, UUID courseId);
 
 }
