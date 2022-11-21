@@ -1,12 +1,10 @@
 package com.ead.course.controller;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.validation.Valid;
-
+import com.ead.course.dtos.CourseDto;
+import com.ead.course.models.CourseModel;
+import com.ead.course.services.CourseService;
+import com.ead.course.specifications.SpecificationTemplate;
+import com.ead.course.validation.CourseValidator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,21 +13,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
-import com.ead.course.dtos.CourseDto;
-import com.ead.course.models.CourseModel;
-import com.ead.course.services.CourseService;
-import com.ead.course.specifications.SpecificationTemplate;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/courses")
@@ -38,9 +29,18 @@ public class CourseController {
 
 	@Autowired
 	CourseService courseService;
+
+    @Autowired
+    CourseValidator courseValidator;
 	
 	@PostMapping
-	public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseDto courseDto) {		
+	public ResponseEntity<Object> saveCourse(@RequestBody CourseDto courseDto, Errors errors) {
+        courseValidator.validate(courseDto, errors);
+
+        if (errors.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getAllErrors());
+        }
+
 		var courseModel = new CourseModel();
 		
 		BeanUtils.copyProperties(courseDto, courseModel);
