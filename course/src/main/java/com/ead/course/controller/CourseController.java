@@ -3,6 +3,7 @@ package com.ead.course.controller;
 import com.ead.course.dtos.CourseDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.services.CourseService;
+import com.ead.course.services.CourseUserService;
 import com.ead.course.specifications.SpecificationTemplate;
 import com.ead.course.validation.CourseValidator;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +33,9 @@ public class CourseController {
 
     @Autowired
     CourseValidator courseValidator;
+
+	@Autowired
+	CourseUserService courseUserService;
 	
 	@PostMapping
 	public ResponseEntity<Object> saveCourse(@RequestBody CourseDto courseDto, Errors errors) {
@@ -105,5 +109,5 @@ public class CourseController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(courseModelOptional.get());
 	}
-	
+
 }
