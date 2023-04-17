@@ -1,4 +1,4 @@
-package com.ead.authuser.models;
+package com.ead.course.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -14,19 +14,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "TB_USER_COURSES")
-public class UserCourseModel implements Serializable {
+@Table(name = "TB_USERS")
+public class UserModel implements Serializable {
 
-	private static final long serialVersionUID = 968341758255417606L;
+	private static final long serialVersionUID = 978321758255411606L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID id;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	private UserModel user;
-	
-	@Column(nullable = false)
-	private UUID courseId;
+	private UUID userId;
 
 }

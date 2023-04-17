@@ -3,7 +3,7 @@ package com.ead.course.controller;
 import com.ead.course.dtos.CourseDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.services.CourseService;
-import com.ead.course.services.CourseUserService;
+import com.ead.course.services.UserService;
 import com.ead.course.specifications.SpecificationTemplate;
 import com.ead.course.validation.CourseValidator;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +35,7 @@ public class CourseController {
     CourseValidator courseValidator;
 
 	@Autowired
-	CourseUserService courseUserService;
+    UserService userService;
 	
 	@PostMapping
 	public ResponseEntity<Object> saveCourse(@RequestBody CourseDto courseDto, Errors errors) {
@@ -90,13 +90,9 @@ public class CourseController {
 	
 	@GetMapping
 	public ResponseEntity<Page<CourseModel>> getAllCourses(SpecificationTemplate.CourseSpec spec,
-			@PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
-			@RequestParam(required = false) UUID userId) {
-		if (userId != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(SpecificationTemplate.courseUserId(userId), pageable));
-		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
-		}
+														   @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
+														   @RequestParam(required = false) UUID userId) {
+		return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
 	}
 	
 	@GetMapping("/{courseId}")
