@@ -23,6 +23,8 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+  rabbitmq:
+    addresses: amqps://qxcsjgln:ks7OsmDW0TAI8kc119RuAclF6U-c_dtO@toad.rmq.cloudamqp.com/qxcsjgln
 
 logging:
   level: 
