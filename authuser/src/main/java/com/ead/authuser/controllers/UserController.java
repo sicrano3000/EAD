@@ -69,7 +69,7 @@ public class UserController {
 			log.warn("User {} not found ", userId);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
 		} else {		
-			userService.delete(userModelOptional.get());
+			userService.deleteUser(userModelOptional.get());
 			
 			log.debug("DELETE deleteUser userId saved {} ", userId);
 			log.info("User deleted successfully userId {} ", userId);
@@ -98,7 +98,7 @@ public class UserController {
 			userModel.setCpf(userDto.getCpf());
 			userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 			
-			userService.save(userModel);
+			userService.updateUser(userModel);
 			
 			log.debug("PUT updateUser userId saved {} ", userModel.getUserId());
 			log.info("User updated successfully userId {} ", userModel.getUserId());
@@ -125,7 +125,7 @@ public class UserController {
 			userModel.setPassword(userDto.getPassword());
 			userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 			
-			userService.save(userModel);
+			userService.updatePassword(userModel);
 			
 			log.debug("PUT updateUser userId saved {} ", userModel.getUserId());
 			log.info("Password updated successfully userId {} ", userModel.getUserId());
@@ -148,7 +148,7 @@ public class UserController {
 			userModel.setImageUrl(userDto.getImageUrl());
 			userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 			
-			userService.save(userModel);			
+			userService.updateUser(userModel);
 			return ResponseEntity.status(HttpStatus.OK).body(userModel);
 		}
 	}
