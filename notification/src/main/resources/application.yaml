@@ -38,6 +38,16 @@ logging:
     com.ead: TRACE
     root: INFO
 
+ead:
+  broker:
+    exchange:
+      notificationCommandExchange: ead.notificationcommand
+    queue:
+      notificationCommandQueue:
+        name: ead.notificationcommand.ms.notification
+    key:
+      notificationCommandKey: ms.notification
+
 management:
   endpoints:
     web:
