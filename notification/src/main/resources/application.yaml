@@ -39,6 +39,9 @@ logging:
     root: INFO
 
 ead:
+  serviceRegistry:
+    username: serviceregistry
+    password: 'ead123sr'
   broker:
     exchange:
       notificationCommandExchange: ead.notificationcommand
@@ -59,6 +62,6 @@ management:
 eureka:
   client:
     serviceUrl:
-      defaultZone: 'http://localhost:8761/eureka'
+      defaultZone: 'http://${ead.serviceRegistry.username}:${ead.serviceRegistry.password}@localhost:8761/eureka'
   instance:
     hostname: localhost

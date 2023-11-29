@@ -38,6 +38,9 @@ logging:
     root: INFO
 
 ead:
+  serviceRegistry:
+    username: serviceregistry
+    password: 'ead123sr'
   api:
     url:
       course: 'http://ead-course-service/ead-course'
@@ -48,7 +51,7 @@ ead:
 eureka:
   client:
     service-url:
-      defaultZone: 'http://localhost:8761/eureka'
+      defaultZone: 'http://${ead.serviceRegistry.username}:${ead.serviceRegistry.password}@localhost:8761/eureka'
   instance:
     hostname: localhost
 
